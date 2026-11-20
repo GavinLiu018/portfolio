@@ -7,7 +7,7 @@ I'm a statistics student at **[UCLA]** (expected graduation **[Spring 2028]**) l
 turning messy real-world data into models and tools that people can actually use, and I care about
 getting the numbers right: validating inputs, testing code, and checking where a metric can mislead.
 
-[LinkedIn]([https://www.linkedin.com/in/gavin-liu-stats/]) · [Email](mailto:[gavin.t.liu@gmail.com]) · [Resume]([[ResumeGavinLiu.pdf](https://github.com/GavinLiu018/portfolio/blob/main/ResumeGavinLiu.pdf)])
+[LinkedIn](https://www.linkedin.com/in/gavin-liu-stats/) · [Email](mailto:[gavin.t.liu@gmail.com]) · [Resume](https://github.com/GavinLiu018/portfolio/blob/main/ResumeGavinLiu.pdf)
 
 ---
 
