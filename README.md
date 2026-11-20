@@ -13,7 +13,7 @@ getting the numbers right: validating inputs, testing code, and checking where a
 
 ## Projects
 
-### 🏈 [NFL Player Rankings](https://github.com/GavinLiu018/nfl-player-analysis): configurable scoring model + interactive app
+### [NFL Player Rankings](https://github.com/GavinLiu018/nfl-player-analysis): configurable scoring model + interactive app
 
 A local app that ranks every NFL player in the 2026 season using a scoring model the user
 configures per position. I built it **twice, in R (Shiny) and Python (Streamlit)**, sharing one
@@ -38,7 +38,7 @@ config and data layer, with a test that checks both versions give every player t
 
 ---
 
-### 📈 [NFL Contract-Year Performance & Compensation](https://github.com/GavinLiu018/nfl-contract-year): exploratory analysis (2015–2023)
+### [NFL Contract-Year Performance & Compensation](https://github.com/GavinLiu018/nfl-contract-year): exploratory analysis (2015–2023)
 
 Do NFL players really play better in the final year of their contract, and does contract-year
 performance predict the guaranteed money on their next deal?
@@ -88,5 +88,5 @@ performance predict the guaranteed money on their next deal?
 
 ---
 
-📫 **Open to Summer 2027 internships.** The best way to reach me is [gavin.t.liu@gmail.com] or
-[LinkedIn]([https://www.linkedin.com/in/gavin-liu-stats/]).
+**Open to Summer 2027 internships.** The best way to reach me is [gavin.t.liu@gmail.com] or
+[LinkedIn](https://www.linkedin.com/in/gavin-liu-stats/).
