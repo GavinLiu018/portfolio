@@ -1,84 +1,92 @@
-# NFL Contract Year Performance & Compensation Analysis (2015–2023)
+# Gavin Liu
 
-An exploratory data analysis (EDA) project investigating the "Contract Year Phenomenon" in the National Football League (NFL) and how on-field efficiency translates into guaranteed compensation in subsequent contracts.
+**Statistics student · Sports analytics · R & Python**
 
-**Author:** Gavin Liu  
-**Tech Stack:** R (`dplyr`, `ggplot2`, `nflfastR`, `nflreadr`)
+I'm a statistics student at **[UCLA]** (expected graduation **[Spring 2028]**) looking for a
+**Summer 2027 internship** in data science, statistical analysis, or sports analytics. I like
+turning messy real-world data into models and tools that people can actually use, and I care about
+getting the numbers right: validating inputs, testing code, and checking where a metric can mislead.
 
----
-
-## 📌 Project Overview
-
-In professional sports, a common narrative suggests that athletes elevate their performance during the final year of their contracts to maximize their free-agent market value. Using historical NFL contract data and weekly player performance metrics from **2015 to 2023**, this project explores:
-1. Whether offensive skill players (RBs and WRs) actually perform better during their contract years.
-2. Why Expected Points Added (EPA) can be misleading when evaluating Running Backs compared to traditional efficiency metrics.
-3. How strongly a player's contract-year EPA correlates with the guaranteed money they receive on their next deal across different positions (QBs, RBs, WRs).
+[LinkedIn]([https://www.linkedin.com/in/gavin-liu-stats/]) · [Email](mailto:[gavin.t.liu@gmail.com]) · [Resume]([link-to-resume-pdf])
 
 ---
 
-## 📊 Data Sources & Methodology
+## Projects
 
-Data was programmatically sourced via the `nflverse` ecosystem (`nflreadr` & `nflfastR`), combining historical OverTheCap contract records with weekly offensive player statistics.
+### 🏈 [NFL Player Rankings](https://github.com/GavinLiu018/nfl-player-analysis): configurable scoring model + interactive app
 
-### Data Engineering Pipeline:
-* **Temporal Alignment:** Joined contract records (`gsis_id`) with weekly performance logs (`player_id`) across 1,249 unique offensive players, strictly filtering game logs to fall within each contract's active start and end seasons (`2015–2023`).
-* **Contract Year Flagging:** Created a boolean indicator (`contract_year`) identifying whether a given season represented the final year of a player's active contract (`season == season_end`).
-* **Feature Engineering:** Computed custom per-game efficiency metrics across 50,265 player-game observations:
-  * `total_epa`: Combined passing, rushing, and receiving Expected Points Added.
-  * `completion_percent`: Passing completions divided by attempts.
-  * `yards_per_carry`: Rushing yards divided by carries.
-  * `catch_rate`: Receptions divided by targets.
+A local app that ranks every NFL player in the 2026 season using a scoring model the user
+configures per position. I built it **twice, in R (Shiny) and Python (Streamlit)**, sharing one
+config and data layer, with a test that checks both versions give every player the same score.
 
----
+**What I did**
+- **Statistical model:** each metric is converted to a percentile among *qualified* players at that
+  position (ties counted as half), or to a z-score passed through the normal CDF. The player's score is
+  the weighted average × 100. Users choose metrics, weights (0–10), direction, and qualification rules.
+- **Data pipeline:** downloads nightly [nflverse](https://github.com/nflverse) releases (~150 stat
+  columns per player) and replaces the cached data only if every row is from the right season and all
+  expected columns are present. If a check fails, the old data is kept.
+- **Correct aggregation over week ranges:** counting stats are summed, while rate stats (target
+  share, air-yards share, PACR, RACR, FG%) are *recomputed* from team totals instead of averaged, and
+  CPOE is weighted by pass attempts.
+- **Safe custom metrics:** users can define metrics like `(rushing_yards + receiving_yards) / games`.
+  The parser accepts only arithmetic and column names, so arbitrary code can't run.
+- **Engineering:** unit tests in `testthat` and `pytest`, an R-vs-Python parity check, and one-click
+  launchers for Windows and macOS.
 
-## 🔍 Key Findings
-
-### 1. The Running Back EPA Paradox
-* **No Contract Year Bump:** Running backs show virtually identical average EPA per game in contract years versus non-contract years (hovering around `-0.65` EPA/game).
-* **EPA vs. Yards Per Carry:** Despite negative average EPA (which heavily favors explosive passing plays over short, consistent gains), RBs rank as the **4th highest-paid position** by Average Per Year (APY). Evaluating RBs via **Yards Per Carry (~4.0 YPC)** reveals steady, positive drive-sustaining value that EPA alone obscures.
-
-### 2. Star vs. Replacement-Level Wide Receivers
-* **The Overall Dip:** Across all wide receivers, average receiving yards per game (`~41` vs. `~28` yds) and receptions per game (`~3.2` vs. `~2.3`) actually *drop* during contract years—largely driven by depth/replacement-level receivers losing target share or roster spots.
-* **Elite Consistency:** When isolating high-volume receivers averaging **65+ receiving yards per game** (~1,100+ yards/season), the contract-year drop disappears entirely, showing consistent quarterback target volume regardless of contract status.
-
-### 3. Contract Year EPA vs. Next Contract Guaranteed Money
-Using ordinary least squares (OLS) linear regression (`guaranteed_next ~ contract_year_epa`), positional market sensitivity to contract-year efficiency varies substantially:
-* **Quarterbacks (Slope: `1.60`):** Highest financial return per unit of contract-year EPA, reflecting the premium placed on QB efficiency in free agency and extensions.
-* **Wide Receivers (Slope: `1.09`):** Strong positive relationship between contract-year efficiency and future guaranteed money.
-* **Running Backs (Slope: `0.86`):** Lowest sensitivity to contract-year EPA, aligning with broader NFL positional devaluation trends for aging running backs.
+`R` `Shiny` `Python` `Streamlit` `pandas` `testthat` `pytest` `YAML`
 
 ---
 
-## 📁 Repository Structure
+### 📈 [NFL Contract-Year Performance & Compensation](https://github.com/GavinLiu018/nfl-contract-year): exploratory analysis (2015–2023)
 
-```text
-├── stat15_eda.Rmd       # Main R Markdown file containing data cleaning, feature engineering, & visualizations
-├── stat15_eda.pdf       # Knitted PDF report with embedded plots and analytical commentary
-└── README.md            # Project documentation
-```
+Do NFL players really play better in the final year of their contract, and does contract-year
+performance predict the guaranteed money on their next deal?
+
+**What I did**
+- **Data engineering:** joined OverTheCap contract records to weekly game logs for **1,249 offensive
+  players (50,265 player-games)**, kept only games inside each contract's active seasons, and
+  flagged contract years (`season == season_end`).
+- **Feature engineering:** total EPA (passing + rushing + receiving), completion %, yards per carry,
+  and catch rate per game.
+- **Modeling:** OLS regressions of next-contract guaranteed money on contract-year EPA, fit separately
+  for QBs, WRs, and RBs.
+
+**Key findings**
+- **No contract-year bump for RBs.** Average EPA per game is about the same in contract and non-contract
+  years. RB EPA is negative on average, yet RBs are the 4th highest-paid position by APY, which suggests
+  EPA undervalues their steady, drive-sustaining gains (≈4.0 yards per carry).
+- **WRs: averages hide who is in the sample.** Across all receivers, yards and receptions per game drop in
+  contract years, mostly because of depth receivers losing targets. For high-volume WRs (65+ yards per
+  game) the drop disappears.
+- **The market rewards QB efficiency most.** Next-contract guarantees rise most steeply with contract-year
+  EPA for QBs (slope 1.60), then WRs (1.09), then RBs (0.86).
+
+`R` `R Markdown` `dplyr` `ggplot2` `nflfastR` `nflreadr` `Linear regression`
 
 ---
 
-## 🚀 How to Run Locally
+## Skills
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/nfl-contract-year-eda.git
-   cd nfl-contract-year-eda
-   ```
-2. **Install required R packages:**
-   ```r
-   install.packages(c("nflfastR", "nflreadr", "dplyr", "ggplot2", "rmarkdown"))
-   ```
-3. **Knit the R Markdown document:**
-   Open `stat15_eda.Rmd` in RStudio and click **Knit**, or run:
-   ```r
-   rmarkdown::render("stat15_eda.Rmd")
-   ```
+| Area | Tools & methods |
+|---|---|
+| **Languages** | R, Java |
+| **Statistics** | Linear regression (OLS), exploratory data analysis, percentile & z-score normalization, weighted composite indices |
+| **Data** | `dplyr`, `pandas`, data cleaning & joins, feature engineering, data validation |
+| **Visualization** | `ggplot2`, Shiny, Streamlit, interactive dashboards |
+| **Workflow** | Git/GitHub, R Markdown, unit testing (`testthat`, `pytest`), reproducible pipelines |
+
+## Relevant coursework
+
+*[Probability, Programming with R, Introduction to Data Science, Introduction to Statistical Reasoning, Linear Algebra & Applications, Multivariable Calculus]*
+
+## What I'm working on next
+
+- Adding R², p-values, and controls (age, injury history, cap-adjusted guarantees) to the contract-year regressions
+- Extending the contract-year analysis to tight ends and defensive players
+- Embedding key figures from both projects directly in their READMEs
 
 ---
 
-## 🔮 Future Improvements
-* Incorporate $R^2$, p-values, and multivariate controls (e.g., player age, injury history, salary cap inflation via `inflated_guaranteed`) into the regression models.
-* Expand positional analysis to include Tight Ends (TE) and defensive players.
-* Export key `ggplot2` figures into an `/images` folder to embed directly in this README.
+📫 **Open to Summer 2027 internships.** The best way to reach me is [gavin.t.liu@gmail.com] or
+[LinkedIn]([https://www.linkedin.com/in/gavin-liu-stats/]).
